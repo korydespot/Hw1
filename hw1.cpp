@@ -39,7 +39,7 @@
 #define WINDOW_HEIGHT 600
 
 #define MAX_PARTICLES 1
-#define GRAVITY 0.1
+#define GRAVITY 0.2
 
 //X Windows variables
 Display *dpy;
@@ -220,7 +220,7 @@ int check_keys(XEvent *e, Game *game)
 			return 1;
 		}
 		//You may check other keys here.
-
+	
 
 
 	}
@@ -235,14 +235,27 @@ void movement(Game *game)
 		return;
 
 	p = &game->particle;
+	//check for collision with shapes...
+	Shape *s;
+	
+	s = &game->box;
+	if(p->s.center.y < s->center.y + s->height &&
+	   p->s.center.y > s->center.y - s->height) {
+		if(p->s.center.x > s->center.x - s->width
+                   && p->s.center.x < s->center.x + s->width){
+			p->velocity.y = -p->velocity.y;
+		}
+	} 
+	
 	p->s.center.x += p->velocity.x;
 	p->s.center.y += p->velocity.y;
 
-	//check for collision with shapes...
-	//Shape *s;
 
+	p->velocity.y -= GRAVITY;
+
+	
 	//check for off-screen
-	if (p->s.center.y < 0.0) {
+	if (p->s.center.y < 0.0 || p->s.center.y > 600) {
 		std::cout << "off screen" << std::endl;
 		game->n = 0;
 	}
