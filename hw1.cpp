@@ -265,7 +265,6 @@ void movement(Game *game)
 		p->s.center.x += p->velocity.x;
 		p->s.center.y += p->velocity.y;
 		
-		Shape *s;
 	
 	if (game->bubbler != 0) {
             // the bubbler is on
